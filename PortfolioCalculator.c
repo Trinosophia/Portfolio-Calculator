@@ -3,6 +3,8 @@
 #include <string.h>
 void printAssetName(char assetName[]);
 void printPortfolio(double avgBuyPrice, double avgSellPrice, double initialBalance, double currentBalance, double netProfit);
+double checkNetProfit(double sellPrice, double buyPrice, double quantity);
+double netProfit;
 
 void main()
 {
@@ -10,7 +12,7 @@ void main()
     char resume = 'y';
     int count = 0;
     int cont = 1;
-    double buyPrice, buyRunTotal, sellRunTotal, sellPrice, avgBuyPrice, avgSellPrice, initialBalance, totalQuant, quantity, netProfit, currentBalance = 0;
+    double buyPrice, buyRunTotal, sellRunTotal, sellPrice, avgBuyPrice, avgSellPrice, initialBalance, totalQuant, quantity, currentBalance = 0;
 
     printf("Enter the name of the asset you purchased.\n");
     fgets(assetName, sizeof(assetName), stdin);
@@ -27,27 +29,26 @@ void main()
         scanf("%lf", &quantity);
         totalQuant += quantity;
         initialBalance += (buyPrice * quantity);
-        if (sellPrice < buyPrice)
-            currentBalance -= (sellPrice * quantity);
-        else
-            currentBalance += (sellPrice * quantity);
+        currentBalance += (sellPrice * quantity);
+        netProfit += checkNetProfit(sellPrice, buyPrice, quantity);
+        // if (sellPrice > buyPrice)
+        // {
+        //     netProfit += (sellPrice * quantity) - (buyPrice * quantity);
+        // }
+        // else
+        // {
+        //     netProfit += (sellPrice * quantity) - (buyPrice * quantity);
+        // }
         count++;
         fflush(stdin);
         printf("Did you have another order to input? Please enter Y or N.\n");
         scanf("%c", &resume);
     }
-    // printf("Buy Run Total: %lf\n", buyRunTotal);
-    // printf("Sell Run Total: %lf\n", sellRunTotal);
     avgBuyPrice = buyRunTotal / count;
     avgSellPrice = sellRunTotal / count;
-    netProfit += currentBalance - initialBalance;
-    // printf("%d\n", cont);
-    // printf("%c\n", resume);
+
     printAssetName(assetName);
     printPortfolio(avgBuyPrice, avgSellPrice, initialBalance, currentBalance, netProfit);
-
-    // printf("You entered %0.2lf and %0.2lf\n", buyPrice, sellPrice);
-    // printf("\nYou entered: %c%s\n", toupper(assetName[0]), assetName+1);
 }
 
 void printAssetName(char assetName[])
@@ -88,4 +89,18 @@ void printAssetName(char assetName[])
 void printPortfolio(double avgBuyPrice, double avgSellPrice, double initialBalance, double currentBalance, double netProfit)
 {
     printf("Average Buy Price: $%0.2lf\n Average Sell Price: $%0.2lf\n Initial Investment: $%0.2lf\n Current Balance: $%.02lf\n Net Profit: $%.02lf\n", avgBuyPrice, avgSellPrice, initialBalance, currentBalance, netProfit);
+}
+
+double checkNetProfit(double sellPrice, double buyPrice, double quantity)
+{
+    double netProfit;
+    if (sellPrice > buyPrice)
+    {
+        netProfit += (sellPrice * quantity) - (buyPrice * quantity);
+    }
+    else
+    {
+        netProfit += (sellPrice * quantity) - (buyPrice * quantity);
+    }
+    return netProfit;
 }
