@@ -31,14 +31,6 @@ void main()
         initialBalance += (buyPrice * quantity);
         currentBalance += (sellPrice * quantity);
         netProfit += checkNetProfit(sellPrice, buyPrice, quantity);
-        // if (sellPrice > buyPrice)
-        // {
-        //     netProfit += (sellPrice * quantity) - (buyPrice * quantity);
-        // }
-        // else
-        // {
-        //     netProfit += (sellPrice * quantity) - (buyPrice * quantity);
-        // }
         count++;
         fflush(stdin);
         printf("Did you have another order to input? Please enter Y or N.\n");
